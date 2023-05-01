@@ -8,8 +8,8 @@ import { Filter } from './Filter/Filter';
 import { ContactsList } from './ContactsList/ContactsList';
 import { Title, Notification } from './App.styles';
 import { useEffect } from 'react';
-import { setFilter, addContact, deleteContact } from 'store/contactsSlice';
-import { persistor } from 'store/store';
+import { setFilter, addContact, deleteContact } from 'redux/contactsSlice';
+import { persistor } from 'redux/store';
 
 export function App() {
   const dispatch = useDispatch();
