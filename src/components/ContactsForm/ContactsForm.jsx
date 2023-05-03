@@ -1,11 +1,16 @@
 import { useState } from 'react';
 import { nanoid } from 'nanoid';
-import PropTypes from 'prop-types';
 import { Form, Input, SubButton } from './ContactsForm.styles';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { addContact } from 'redux/contactsSlice';
 
-export const ContactsForm = ({ onSubmit }) => {
+export const ContactsForm = () => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
+  const contacts = useSelector(state => state.contacts.contacts);
+  const dispatch = useDispatch();
 
   const handleChange = e => {
     const { name, value } = e.target;
@@ -23,10 +28,24 @@ export const ContactsForm = ({ onSubmit }) => {
       number: number,
       id: nanoid(),
     };
-    onSubmit(newContact);
+    const isInContacts = contacts.find(
+      contact =>
+        contact.name.toLowerCase() === newContact.name.toLowerCase() ||
+        contact.number === newContact.number
+    );
+    if (isInContacts) {
+      toast.error(
+        `${newContact.name} or ${newContact.number} has already existed`
+      );
+      return;
+    }
+    // eslint-disable-next-line no-lone-blocks
+    {
+      dispatch(addContact(newContact));
 
-    setName('');
-    setNumber('');
+      setName('');
+      setNumber('');
+    }
   };
 
   return (
@@ -58,8 +77,4 @@ export const ContactsForm = ({ onSubmit }) => {
       <SubButton type="submit">Add contact</SubButton>
     </Form>
   );
-};
-
-ContactsForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
 };

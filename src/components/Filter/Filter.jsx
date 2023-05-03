@@ -1,7 +1,14 @@
 import { Form, Input } from 'components/ContactsForm/ContactsForm.styles';
-import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
+import { setFilter } from 'redux/contactsSlice';
 
-export const Filter = ({ filter, handleFilter }) => {
+export const Filter = () => {
+  const filter = useSelector(state => state.contacts.filter);
+  const dispatch = useDispatch();
+
+  const handleFilter = e => {
+    dispatch(setFilter(e.target.value));
+  };
   return (
     <Form>
       <label>
@@ -15,9 +22,4 @@ export const Filter = ({ filter, handleFilter }) => {
       </label>
     </Form>
   );
-};
-
-Filter.propTypes = {
-  filter: PropTypes.string.isRequired,
-  handleFilter: PropTypes.func.isRequired,
 };

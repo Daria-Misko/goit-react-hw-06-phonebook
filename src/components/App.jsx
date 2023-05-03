@@ -1,54 +1,26 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
-
 import { ContactsForm } from './ContactsForm/ContactsForm';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Filter } from './Filter/Filter';
 import { ContactsList } from './ContactsList/ContactsList';
 import { Title, Notification } from './App.styles';
-import { useEffect } from 'react';
-import { setFilter, addContact, deleteContact } from 'redux/contactsSlice';
 import { persistor } from 'redux/store';
+import { selectorContacts } from 'redux/selectors';
 
 export function App() {
-  const dispatch = useDispatch();
-  const contacts = useSelector(state => state.contacts.contacts);
-  const filter = useSelector(state => state.contacts.filter);
-
-  useEffect(() =>
-    localStorage.setItem('contacts', JSON.stringify(contacts), [contacts])
-  );
-
-  const handleAddContact = newContact => {
-    dispatch(addContact(newContact));
-  };
-
-  const handleFilter = e => {
-    dispatch(setFilter(e.target.value));
-  };
-
-  const getVisiableContacts = () => {
-    return contacts.filter(contact =>
-      contact.name.toLowerCase().includes(filter.toLowerCase())
-    );
-  };
-
-  const handleDelete = id => {
-    dispatch(deleteContact(id));
-  };
-
-  const contactsList = getVisiableContacts();
+  const contacts = useSelector(selectorContacts);
 
   return (
     <PersistGate loading={null} persistor={persistor}>
       <Title>Phonebook</Title>
-      <ContactsForm onSubmit={handleAddContact} />
+      <ContactsForm />
       <Title>Contacts</Title>
-      {contactsList.length !== 0 ? (
+      {contacts.length !== 0 ? (
         <>
-          <Filter filter={filter} handleFilter={handleFilter} />
-          <ContactsList handleDelete={handleDelete} contacts={contactsList} />
+          <Filter />
+          <ContactsList />
         </>
       ) : (
         <Notification>Contact list is empty =(</Notification>
