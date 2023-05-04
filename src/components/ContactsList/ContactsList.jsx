@@ -5,19 +5,19 @@ import { selectorContacts, selectorFilter } from 'redux/selectors';
 
 export const ContactsList = () => {
   const contacts = useSelector(selectorContacts);
-  // const filter = useSelector(selectorFilter);
-  // // const dispatch = useDispatch();
+  const filter = useSelector(selectorFilter);
 
-  // const getVisiableContacts = () => {
-  //   return contacts.filter(contact =>
-  //     contact.name.toLowerCase().includes(filter.toLowerCase())
-  //   );
-  // };
-  // const contactsList = getVisiableContacts();
-  // console.log(contactsList);
+  const getVisibleContacts = () => {
+    return contacts.filter(contact =>
+      contact.name.toLowerCase().includes(filter.toLowerCase())
+    );
+  };
+  const contactsList = getVisibleContacts();
+
+  if (!contactsList.length) return;
   return (
     <List>
-      {contacts.map(contact => (
+      {contactsList.map(contact => (
         <ContactsListItem key={contact.id} contact={contact} />
       ))}
     </List>

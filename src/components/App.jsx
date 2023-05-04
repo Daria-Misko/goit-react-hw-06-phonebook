@@ -17,12 +17,9 @@ export function App() {
       <Title>Phonebook</Title>
       <ContactsForm />
       <Title>Contacts</Title>
-      {contacts.length !== 0 ? (
-        <>
-          <Filter />
-          <ContactsList />
-        </>
-      ) : (
+      {contacts.length !== 0 && <Filter />}
+      <ContactsList />
+      {contacts.length === 0 && (
         <Notification>Contact list is empty =(</Notification>
       )}
       <ToastContainer position="top-right" autoClose={3000} theme="colored" />

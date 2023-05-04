@@ -13,27 +13,16 @@ export const contactsSlice = createSlice({
   },
   reducers: {
     addContact: (state, { payload }) => {
-      state.contacts.push(payload);
-      // if (
-      //   state.contacts.find(
-      //     contact =>
-      //       contact.name.toLowerCase() === newContact.name.toLowerCase() ||
-      //       contact.number === newContact.number
-      //   )
-      // ) {
-      //   toast.error(
-      //     `${newContact.name} or ${newContact.number} has already existed`
-      //   );
-      // } else {
-      //   state.contacts.push(newContact);
-      // }
+      state.items.push(payload);
+      state.filter = '';
     },
     setFilter: (state, action) => {
       state.filter = action.payload;
     },
     deleteContact: (state, action) => {
       const id = action.payload;
-      state.contacts = state.contacts.filter(contact => contact.id !== id);
+      state.items = state.items.filter(contact => contact.id !== id);
+      state.filter = '';
     },
   },
 });
@@ -41,6 +30,7 @@ export const contactsSlice = createSlice({
 const persistConfig = {
   key: 'contacts',
   storage,
+  whitest: ['items'],
 };
 
 export const contactsReducers = contactsSlice.reducer;

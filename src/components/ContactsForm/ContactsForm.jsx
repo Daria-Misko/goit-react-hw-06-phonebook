@@ -5,11 +5,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { addContact } from 'redux/contactsSlice';
+import { selectorContacts } from 'redux/selectors';
 
 export const ContactsForm = () => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
-  const contacts = useSelector(state => state.contacts.contacts);
+  const contacts = useSelector(selectorContacts);
   const dispatch = useDispatch();
 
   const handleChange = e => {
@@ -39,13 +40,10 @@ export const ContactsForm = () => {
       );
       return;
     }
-    // eslint-disable-next-line no-lone-blocks
-    {
-      dispatch(addContact(newContact));
+    dispatch(addContact(newContact));
 
-      setName('');
-      setNumber('');
-    }
+    setName('');
+    setNumber('');
   };
 
   return (
